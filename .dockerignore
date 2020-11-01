@@ -2,6 +2,7 @@
 .github/
 .circleci
 .travis.yml
+Makefile
 docs/
 .DS_Store
 node_modules
