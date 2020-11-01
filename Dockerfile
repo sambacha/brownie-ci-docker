@@ -8,10 +8,6 @@ LABEL maintainer="Community Engineering <gitr@yfinance.dev>"
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-# Add solidity at top, as it will enable caching better
-RUN wget https://github.com/ethereum/solidity/releases/download/v0.5.17/solc-static-linux \
- && chmod +x solc-static-linux \
- && mv solc-static-linux /usr/bin/solc
 
 ENV PYENV_ROOT=/home/circleci/.pyenv \
 	PATH=/home/circleci/.pyenv/shims:/home/circleci/.pyenv/bin:/home/circleci/.poetry/bin:$PATH
