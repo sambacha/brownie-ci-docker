@@ -12,9 +12,9 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 ENV PYENV_ROOT=/home/circleci/.pyenv \
 	PATH=/home/circleci/.pyenv/shims:/home/circleci/.pyenv/bin:/home/circleci/.poetry/bin:$PATH
 
-
-RUN useradd -m circleci
-USER circleci
+# configure a different user if needed, cimg/base already sets circleci as the user
+# RUN useradd -m circleci
+# USER circleci
 
 WORKDIR /home/circleci/
 
