@@ -20,7 +20,6 @@ ENV PYENV_ROOT=/home/circleci/.pyenv \
 RUN useradd -m circleci
 USER circleci
 
-RUN --chown=circleci:circleci
 WORKDIR /home/circleci/
 
 # segregate the base apt packages from python3's needed deps.
