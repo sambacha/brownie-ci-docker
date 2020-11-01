@@ -6,13 +6,33 @@ SHELL ["/bin/bash", "-c"]
 
 LABEL maintainer="Community Engineering <gitr@yfinance.dev>"
 
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+# Add solidity at top, as it will enable caching better
+RUN wget https://github.com/ethereum/solidity/releases/download/v0.5.17/solc-static-linux \
+ && chmod +x solc-static-linux \
+ && mv solc-static-linux /usr/bin/solc
+
 ENV PYENV_ROOT=/home/circleci/.pyenv \
 	PATH=/home/circleci/.pyenv/shims:/home/circleci/.pyenv/bin:/home/circleci/.poetry/bin:$PATH
 
+
+RUN useradd -m circleci
+USER circleci
+
+RUN --chown=circleci:circleci
+WORKDIR /home/circleci/
+
+# segregate the base apt packages from python3's needed deps.
+RUN apt-get -qq update && \
+    apt-get -qq -y --no-install-recommends install build-essentia gnupg software-properties-common linux-tools-common && \
+    ca-certificates locales sudo ca-certificates wget curl && \
+    locale-gen en_US.UTF-8 && \
+    apt-get -qq -y purge gnupg software-properties-common curl && \
+    apt -y autoremove
+
+# leave install recommends for now
 RUN sudo apt-get update && sudo apt-get install -y -qq \
-		build-essential \
-		ca-certificates \
-		curl \
 		git \
 		libbz2-dev \
 		liblzma-dev \
@@ -28,10 +48,11 @@ RUN sudo apt-get update && sudo apt-get install -y -qq \
 		make \
 		python-openssl \
 		tk-dev \
-		wget \
 		xz-utils \
 		jq \
-		linux-tools-common \
+		openssh-client \
+		libpq-dev \
+		unzip \
 		zlib1g-dev && \
 	curl https://pyenv.run | bash && \
 	sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -60,8 +81,11 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+
+
+RUN python3 setup.py install --user
+ENV PATH="/home/slither/.local/bin:${PATH}"
+CMD /bin/bash
 
 ENV PATH=/var/lang/bin:$PATH \
     LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
