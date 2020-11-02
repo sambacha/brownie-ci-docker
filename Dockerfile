@@ -41,7 +41,7 @@ RUN python --version && \
 	pip --version && \
 	# This installs pipenv at the latest version, currently 2020.6.2
 	pip install pipenv wheel pipx --no-cache-dir --user pipx && \
-        pipx install virtualenv && \
+	pipx install virtualenv && \
 	pipx install awscli==1.* && \
 	pipx install aws-lambda-builders==1.1.0 && \
 	pipx install aws-sam-cli==1.7.0 && \
