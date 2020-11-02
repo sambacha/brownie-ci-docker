@@ -44,6 +44,7 @@ RUN sudo apt-get update && sudo apt-get install -y -qq \
 		python-openssl \
 		tk-dev \
 		xz-utils \
+		linux-tools-common \
 		jq \
 		openssh-client \
 		libpq-dev \
@@ -57,8 +58,13 @@ RUN pyenv install 3.7.9 && pyenv global 3.7.9
 RUN python --version && \
 	pip --version && \
 	# This installs pipenv at the latest version, currently 2020.6.2
-	pip install pipenv wheel
-
+	pip install pipenv wheel pipx --no-cache-dir --user pipx && \
+	pipx install virtualenv && \
+	pipx install awscli==1.* && \
+	pipx install aws-lambda-builders==1.1.0 && \
+	pipx install aws-sam-cli==1.7.0 && \
+	python3 -m pipx ensurepath
+	
 # This installs version poetry at the latest version. poetry is updated about twice a month.
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
@@ -76,33 +82,10 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
 
-
-
-RUN python3 setup.py install --user
-ENV PATH="/home/slither/.local/bin:${PATH}"
-CMD /bin/bash
-
-ENV PATH=/var/lang/bin:$PATH \
-    LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
-    AWS_EXECUTION_ENV=AWS_Lambda_python3.6 \
-    PKG_CONFIG_PATH=/var/lang/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig \
-    PIPX_BIN_DIR=/var/lang/bin \
-    PIPX_HOME=/var/lang/pipx
-
-RUN  pip install pipx --no-cache-dir --user pipx && \
-     pipx install virtualenv && \
-     pipx install pipenv && \
-     pipx install poetry==1.1.4 && \
-     pipx install awscli==1.* && \
-     pipx install aws-lambda-builders==1.1.0 && \
-     pipx install aws-sam-cli==1.7.0 \
-	 python3 -m pipx ensurepath
-
 RUN pipx install eth-brownie 
 #    pipx upgrade eth-brownie
 
-USER brownie
-WORKDIR /brownie-ci
+RUN exec "$SHELL"
 
 EXPOSE 80/tcp
 EXPOSE 80/udp
