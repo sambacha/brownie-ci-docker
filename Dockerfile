@@ -18,14 +18,6 @@ ENV PYENV_ROOT=/home/circleci/.pyenv \
 
 WORKDIR /home/circleci/
 
-# segregate the base apt packages from python3's needed deps.
-RUN sudo apt-get -qq update && \
-    sudo apt-get -qq -y --no-install-recommends install build-essential gnupg software-properties-common linux-tools-common && \
-    ca-certificates locales sudo ca-certificates wget curl && \
-    locale-gen en_US.UTF-8 && \
-    sudo apt-get -qq -y purge gnupg software-properties-common curl && \
-    sudo apt -y autoremove -qq
-
 # leave install recommends for now
 RUN sudo apt-get update && sudo apt-get install -y -qq \
 		git \
