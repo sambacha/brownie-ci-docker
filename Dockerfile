@@ -30,7 +30,6 @@ RUN sudo apt-get update && sudo apt-get install -y -qq \
 		tk-dev \
 		wget \
 		xz-utils \
-		jq \
 		linux-tools-common \
 		zlib1g-dev && \
 	curl https://pyenv.run | bash && \
@@ -60,6 +59,9 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
 
+# Adds permission to appuser (non-root) for access to the /var/lang folder
+RUN mkdir -p /var/lang/bin && chown -R circleci /var/lang
+
 ENV PATH=/var/lang/bin:$PATH \
     LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
     AWS_EXECUTION_ENV=AWS_Lambda_python3.6 \
@@ -78,6 +80,8 @@ RUN  pip install pipx --no-cache-dir --user pipx && \
 
 RUN pipx install eth-brownie 
 #    pipx upgrade eth-brownie
+
+RUN exec "$SHELL"
 
 USER brownie
 WORKDIR /brownie-ci
