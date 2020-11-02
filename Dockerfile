@@ -69,9 +69,6 @@ RUN pipx install eth-brownie
 
 RUN exec "$SHELL"
 
-USER brownie
-WORKDIR /brownie-ci
-
 EXPOSE 80/tcp
 EXPOSE 80/udp
 
