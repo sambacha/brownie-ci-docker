@@ -59,15 +59,10 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
 
-# Adds permission to appuser (non-root) for access to the /var/lang folder
-RUN mkdir -p /var/lang/bin && chown -R circleci /var/lang
 
-ENV PATH=/var/lang/bin:$PATH \
-    LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
-    AWS_EXECUTION_ENV=AWS_Lambda_python3.6 \
-    PKG_CONFIG_PATH=/var/lang/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig \
-    PIPX_BIN_DIR=/var/lang/bin \
-    PIPX_HOME=/var/lang/pipx
+ENV PATH=/opt/pipx/bin:$PATH \
+    PIPX_BIN_DIR=/opt/pipx/bin \
+    PIPX_HOME=/opt/pipx
 
 RUN  pip install pipx --no-cache-dir --user pipx && \
      pipx install virtualenv && \
@@ -75,8 +70,8 @@ RUN  pip install pipx --no-cache-dir --user pipx && \
      pipx install poetry==1.1.4 && \
      pipx install awscli==1.* && \
      pipx install aws-lambda-builders==1.1.0 && \
-     pipx install aws-sam-cli==1.7.0 \
-	 python3 -m pipx ensurepath
+     pipx install aws-sam-cli==1.7.0 && \
+     python3 -m pipx ensurepath
 
 RUN pipx install eth-brownie 
 #    pipx upgrade eth-brownie
