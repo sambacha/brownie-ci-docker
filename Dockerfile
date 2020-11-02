@@ -40,8 +40,13 @@ RUN pyenv install 3.7.9 && pyenv global 3.7.9
 RUN python --version && \
 	pip --version && \
 	# This installs pipenv at the latest version, currently 2020.6.2
-	pip install pipenv wheel
-
+	pip install pipenv wheel pipx --no-cache-dir --user pipx && \
+        pipx install virtualenv && \
+	pipx install awscli==1.* && \
+	pipx install aws-lambda-builders==1.1.0 && \
+	pipx install aws-sam-cli==1.7.0 && \
+	python3 -m pipx ensurepath
+	
 # This installs version poetry at the latest version. poetry is updated about twice a month.
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
@@ -58,21 +63,7 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 	rm yarn.tar.gz && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
-
-
-ENV PATH=/opt/pipx/bin:$PATH \
-    PIPX_BIN_DIR=/opt/pipx/bin \
-    PIPX_HOME=/opt/pipx
-
-RUN  pip install pipx --no-cache-dir --user pipx && \
-     pipx install virtualenv && \
-     pipx install pipenv && \
-     pipx install poetry==1.1.4 && \
-     pipx install awscli==1.* && \
-     pipx install aws-lambda-builders==1.1.0 && \
-     pipx install aws-sam-cli==1.7.0 && \
-     python3 -m pipx ensurepath
-
+    
 RUN pipx install eth-brownie 
 #    pipx upgrade eth-brownie
 
