@@ -20,7 +20,7 @@ WORKDIR /home/circleci/
 
 # segregate the base apt packages from python3's needed deps.
 RUN sudo apt-get -qq update && \
-    sudo apt-get -qq -y --no-install-recommends install build-essentia gnupg software-properties-common linux-tools-common && \
+    sudo apt-get -qq -y --no-install-recommends install build-essentials gnupg software-properties-common linux-tools-common && \
     ca-certificates locales sudo ca-certificates wget curl && \
     locale-gen en_US.UTF-8 && \
     sudo apt-get -qq -y purge gnupg software-properties-common curl && \
