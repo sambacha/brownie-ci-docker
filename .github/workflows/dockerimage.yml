@@ -1,6 +1,6 @@
 name: dockerimage
 
-on: push
+on: pull-request
 
 env:
   # TODO: Change variable to your image's name.
