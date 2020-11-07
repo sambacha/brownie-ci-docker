@@ -42,5 +42,5 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           
-          docker tag docker.pkg.github.com/sambacha/brownie-ci-docker/brownie-ci:1.0.0
+          docker tag brownie-ci docker.pkg.github.com/sambacha/brownie-ci-docker/brownie-ci:1.0.0
           docker push docker.pkg.github.com/sambacha/brownie-ci-docker/brownie-ci:1.0.0
