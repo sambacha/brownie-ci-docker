@@ -1,7 +1,7 @@
-user=username
-name=gate-resource
+user=eth-brownie
+name=kebabci
 image=$(user)/$(name)
-tag=2.0.0-beta1
+tag=1.0.2
 
 docker=docker
 dockerfile = Dockerfile
