@@ -23,9 +23,3 @@ jobs:
           tag_with_ref: true
         env:
            DOCKER_IMAGE: sambacha/brownie-ci-docker/$GIT_COMMIT
-
-# docker image push is only supported with a tag of the format :owner/:repo_name/:image_name.
-	#	Please add an image name to "sambacha/brownie-ci-docker" tag. e.g. "sambacha/brownie-ci-docker/<image_name>"
-    #GIT_COMMIT=$(git log -1 --format=%h):
-     
-
