@@ -22,4 +22,4 @@ jobs:
           repository: sambacha/brownie-ci-docker
           tag_with_ref: true
         env:
-           DOCKER_IMAGE: sambacha/brownie-ci-docker/$GITHUB_SHA
+           DOCKER_IMAGE: sambacha/brownie-ci-docker/pyownie
