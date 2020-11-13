@@ -1,4 +1,9 @@
-# Brownie 
+# Pyownie
+
+![Continuous Integration](https://github.com/sambacha/brownie-ci-docker/workflows/Continuous%20Integration/badge.svg)
+
+![CD](https://github.com/sambacha/brownie-ci-docker/workflows/continuous-deployment/badge.svg)
+
 
 ethereum brownie as a CI service
 
