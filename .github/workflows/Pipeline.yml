@@ -5,11 +5,9 @@
 # https://github.com/users/sambacha/packages/container/package/brownie-ci-docker%2Fbrownie-ci
 # 
 
-name: BuildX Pipeline
+name: Pipeline
 
-on:
-  push:
-    branches: master
+on: [push, pull_request]
 
 jobs:
   github-cache:
