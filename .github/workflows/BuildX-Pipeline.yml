@@ -5,7 +5,7 @@
 # https://github.com/users/sambacha/packages/container/package/brownie-ci-docker%2Fbrownie-ci
 # 
 
-name: pipeline
+name: BuildX Pipeline
 
 on:
   push:
