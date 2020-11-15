@@ -1,3 +1,7 @@
+bin/uninstall*
+bin/uninstall-python.sh
+bin/tag-name.sh
+test/
 docker_cli
 .git
 .github/
