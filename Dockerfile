@@ -77,6 +77,8 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 RUN pipx install eth-brownie 
 #    pipx upgrade eth-brownie
 
+RUN source $HOME/.poetry/env
+
 RUN exec "$SHELL"
 
 EXPOSE 80/tcp
