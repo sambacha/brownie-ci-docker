@@ -47,8 +47,5 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           tags: |
-            sambacha/brownie-ci-docker:latest
-            sambacha/brownie-ci-docker:1.0.0
             ghcr.io/sambacha/brownie-ci-docker:latest
-            ghcr.io/sambacha/brownie-ci-docker:1.0.0
           
