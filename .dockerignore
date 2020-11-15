@@ -1,3 +1,6 @@
+*.md
+CHANGELOG.md
+README.md
 bin/uninstall*
 bin/uninstall-python.sh
 bin/tag-name.sh
