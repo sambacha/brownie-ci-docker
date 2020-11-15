@@ -1,0 +1,20 @@
+{
+  "name": "brownie-ci-docker",
+  "version": "1.0.0",
+  "description": "ethereum brownie as a CI service",
+  "main": "index.js",
+  "scripts": {
+    "build": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sambacha/brownie-ci-docker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sambacha/brownie-ci-docker/issues"
+  },
+  "homepage": "https://github.com/sambacha/brownie-ci-docker#readme"
+}
