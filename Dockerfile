@@ -1,6 +1,6 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/base:2020.06
+FROM cimg/base:2020.12
 
 SHELL ["/bin/bash", "-c"]
 
