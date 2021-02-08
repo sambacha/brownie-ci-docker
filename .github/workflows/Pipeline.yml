@@ -7,10 +7,14 @@
 
 name: Pipeline
 
-on: [push, pull_request]
+on: ['push']
+
+# don't use false, as some detections use the presence of a string = true
+env:
+  CI: ''
 
 jobs:
-  github-cache:
+  docker-buildx:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,3 +47,18 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
           tags: |
             ghcr.io/sambacha/brownie-ci-docker:latest
+            
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: sambacha/brownie-ci-docker/pyownie
+          tag_with_ref: true
