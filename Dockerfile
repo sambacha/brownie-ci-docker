@@ -1,6 +1,6 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/base:2020.12
+FROM cimg/base:2020.12 as base 
 
 SHELL ["/bin/bash", "-c"]
 
@@ -17,6 +17,8 @@ ENV PYENV_ROOT=/home/circleci/.pyenv \
 # USER circleci
 
 WORKDIR /home/circleci/
+
+FROM base AS dependencies  
 
 # leave install recommends for now
 RUN sudo apt-get update && sudo apt-get install -y -qq \
@@ -52,13 +54,16 @@ RUN python --version && \
 	# This installs pipenv at the latest version, currently 2020.6.2
 	pip install pipenv wheel pipx --no-cache-dir --user pipx && \
 	pipx install virtualenv && \
-	pipx install awscli==1.* && \
-	pipx install aws-lambda-builders==1.1.0 && \
-	pipx install aws-sam-cli==1.7.0 && \
+#	pipx install awscli==1.* && \
+#	pipx install aws-lambda-builders==1.1.0 && \
+#	pipx install aws-sam-cli==1.7.0 && \
 	python3 -m pipx ensurepath
 	
 # This installs version poetry at the latest version. poetry is updated about twice a month.
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+
+
+# Brownie has Ganache as a dependency, so we need to install Nodejs
 
 RUN curl -sSL "https://raw.githubusercontent.com/CircleCI-Public/cimg-node/master/ALIASES" -o nodeAliases.txt && \
 	NODE_VERSION=$(grep "lts" ./nodeAliases.txt | cut -d "=" -f 2-) && \
@@ -67,16 +72,31 @@ RUN curl -sSL "https://raw.githubusercontent.com/CircleCI-Public/cimg-node/maste
 	rm node.tar.xz nodeAliases.txt && \
 	sudo ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
+RUN npm install ganache-cli -g
+
 ENV YARN_VERSION 1.22.4
 RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v${YARN_VERSION}.tar.gz" && \
 	sudo tar -xzf yarn.tar.gz -C /opt/ && \
 	rm yarn.tar.gz && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
-
+	
+FROM dependencies AS build  
 # brownie --version smoke test
 RUN pipx install eth-brownie && brownie --version
 #    pipx upgrade eth-brownie
+RUN ganache-cli --version
+
+
+# releas 
+FROM python:3.7.9-alpine3.13 AS release
+
+WORKDIR /home/circleci/
+
+COPY --from=dependencies /home/circleci/
+COPY --from=dependencies /root/.cache /root/.cache
+COPY . /home/circleci/
+COPY --from=build /home/circleci/ ./
 
 RUN exec "$SHELL" 
 
