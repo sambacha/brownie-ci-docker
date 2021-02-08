@@ -74,10 +74,11 @@ RUN curl -L -o yarn.tar.gz "https://yarnpkg.com/downloads/${YARN_VERSION}/yarn-v
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarn /usr/local/bin/yarn && \
 	sudo ln -s /opt/yarn-v${YARN_VERSION}/bin/yarnpkg /usr/local/bin/yarnpkg
 
-RUN pipx install eth-brownie 
+# brownie --version smoke test
+RUN pipx install eth-brownie && brownie --version
 #    pipx upgrade eth-brownie
 
-RUN exec "$SHELL"
+RUN exec "$SHELL" 
 
 EXPOSE 80/tcp
 EXPOSE 80/udp
