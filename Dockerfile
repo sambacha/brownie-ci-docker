@@ -83,4 +83,4 @@ RUN exec "$SHELL"
 EXPOSE 80/tcp
 EXPOSE 80/udp
 
-RUN ["/bin/bash", "-c", "brownie --help"]
+CMD ["/bin/bash", "-c", "brownie --help"]
